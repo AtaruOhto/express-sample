@@ -1,8 +1,7 @@
-import {sequelizeInstance} from 'db/dao';
-import Sequelize, {Model} from 'sequelize';
-import {syncData, create, findOne} from 'concerns/sequelize';
+import { sequelizeInstance } from 'db/dao';
+import Sequelize, { Model, UpdateOptions } from 'sequelize';
+import { syncData, create, findOne} from 'concerns/sequelize';
 import { genHash } from 'concerns/bcrypt';
-import update = require("lodash/fp/update");
 
 interface IUserAttrs {
     name: string;
@@ -34,7 +33,7 @@ export const findOneUser = (attrs: IUserOptionalAttrs) => (
     findOne(UserModel, attrs)
 )
 
-export const updateUser = (user: Model<'user', IUserOptionalAttrs>, updateAttrs: IUserOptionalAttrs) => (
+export const updateUser = (user: Model<'user', IUserOptionalAttrs>, updateAttrs: IUserOptionalAttrs, updateOptions: UpdateOptions) => (
     new Promise(async (resolve, reject) => {
 
         if (updateAttrs.password) {
@@ -43,9 +42,8 @@ export const updateUser = (user: Model<'user', IUserOptionalAttrs>, updateAttrs:
             });
         }
 
-        user.update(updateAttrs).then(
+        user.update(updateAttrs, updateOptions).then(
             () => {
-
                 resolve();
             },
             (error: any) => {

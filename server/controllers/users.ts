@@ -16,7 +16,7 @@ export const userUpdate = (app: Express) => {
         }
         const user = await findOneUser(req.user.id).catch((error: any) => { console.error(error); });
         const updateParams = getFilledParams(['name', 'password'], req.body);
-        updateUser(user, updateParams).catch((error) => { console.error(error); });
+        updateUser(user, updateParams, {where: {name: user.name }}).catch((error: any) => { console.error(error); });
         req.flash('notice', 'User info was successfully updated!');
         res.redirect(secretPath);
     });
