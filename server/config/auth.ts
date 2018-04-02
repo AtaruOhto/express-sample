@@ -1,20 +1,20 @@
-import { Express } from 'express';
+import { Express, Request } from 'express';
 import { PassportStatic } from 'passport';
 import passport from 'passport';
 import {Strategy as LocalStrategy } from 'passport-local';
 
-import { findOneUser } from 'models/user';
+import { findOneUser, TUser } from 'models/user';
 import { comparePlainWithHash } from 'concerns/bcrypt';
 import { stdOut, stdErr } from 'concerns/logger';
 
-const authSuccess = (done: Function, user: any, req: any): Function => {
+const authSuccess = (done: Function, user: TUser, req: Request): Function => {
     const msg = 'LOGIN SUCCESS';
     stdOut(msg + user.name);
     req.flash('notice', msg);
     return done(null, user);
 };
 
-const authFailed = (done: Function, req: any, error = ''): Function => {
+const authFailed = (done: Function, req: Request, error = ''): Function => {
     const msg = 'LOGIN FAILED';
     stdErr(msg + error);
     req.flash('notice', msg + error);
@@ -22,18 +22,16 @@ const authFailed = (done: Function, req: any, error = ''): Function => {
 };
 
 const usePassportLocalStrategy = (passportStatic: PassportStatic) => {
-    passportStatic.serializeUser(function (user: any, done: Function) {
+    passportStatic.serializeUser(function (user: TUser, done: Function) {
         done(null, user);
     });
 
-    passportStatic.deserializeUser(function (user: any, done: Function) {
+    passportStatic.deserializeUser(function (user: TUser, done: Function) {
         done(null, user);
     });
 
-    passportStatic.use(new LocalStrategy({
-            passReqToCallback: true,
-        },
-        async(req: any, name: string, password: string, done: Function) => {
+    passportStatic.use(new LocalStrategy(
+        {passReqToCallback: true, }, async(req: Request, name: string, password: string, done: Function) => {
             const user = await findOneUser({name: name}).catch((error: any) => {
                 return authFailed(done, req, error);
             });

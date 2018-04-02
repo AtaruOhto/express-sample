@@ -19,7 +19,6 @@ By default, this sample use Sqlite. Data file is required.
 
 ```
 touch data.sqlite
-
 ```
 
 ### Environment Variable

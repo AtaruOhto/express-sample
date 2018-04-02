@@ -1,6 +1,6 @@
 import { sequelizeInstance } from 'db/dao';
 import Sequelize, { Model, UpdateOptions } from 'sequelize';
-import { syncData, create, findOne} from 'concerns/sequelize';
+import { syncData, create, findOne } from 'concerns/sequelize';
 import { genHash } from 'concerns/bcrypt';
 
 interface IUserAttrs {
@@ -13,8 +13,11 @@ interface IUserOptionalAttrs {
     password?: string;
 }
 
+export type TUser = Model<'user', IUserAttrs>;
+export type TUserUpdate = Model<'user', IUserOptionalAttrs>;
+
 export const UserModel = sequelizeInstance.define('user', {
-    name: {type: Sequelize.STRING, allowNull: false, unique: true, len: [4, 10]},
+    name: {type: Sequelize.STRING, allowNull: false, unique: true},
     password: {type: Sequelize.STRING, allowNull: false},
 });
 
@@ -27,13 +30,13 @@ export const createUser = (attrs: IUserAttrs) => (
         });
         resolve(create(UserModel, attrs));
     })
-)
+);
 
 export const findOneUser = (attrs: IUserOptionalAttrs) => (
     findOne(UserModel, attrs)
-)
+);
 
-export const updateUser = (user: Model<'user', IUserOptionalAttrs>, updateAttrs: IUserOptionalAttrs, updateOptions: UpdateOptions) => (
+export const updateUser = (user: TUserUpdate, updateAttrs: IUserOptionalAttrs, updateOptions: UpdateOptions) => (
     new Promise(async (resolve, reject) => {
 
         if (updateAttrs.password) {
@@ -51,22 +54,16 @@ export const updateUser = (user: Model<'user', IUserOptionalAttrs>, updateAttrs:
             }
         );
     })
-)
+);
 
 const createFirstUserIfNotExist = async () => {
-    await syncData().catch((error: any) => { /* TODO */
-    });
-    UserModel.count().then((numOfUser: number) => {
-        if (numOfUser === 0) {
-            createUser({
-                name: 'first',
-                password: 'pass'
-            })
-            console.log('created!');
-        }
-    }, (error: any) => {
-        console.error(error);
-    })
+    await syncData().catch((error: any) => { console.error(error); });
+    const numOfUser = await UserModel.count().catch((error: any) => { console.error(error); });
+
+    if (numOfUser === 0) {
+        createUser({name: 'first', password: 'pass'}).catch((error: any) => { console.error(error); });
+        console.log('first user created!');
+    }
 };
 
 if (process.env.CREATE_USER_IF_NOT_EXITS) {
