@@ -5,18 +5,17 @@ import {Strategy as LocalStrategy } from 'passport-local';
 
 import { findOneUser, TUser } from 'models/user';
 import { comparePlainWithHash } from 'concerns/bcrypt';
-import { stdOut, stdErr } from 'concerns/logger';
 
 const authSuccess = (done: Function, user: TUser, req: Request): Function => {
     const msg = 'LOGIN SUCCESS';
-    stdOut(msg + user.name);
+    console.log(msg + user.name);
     req.flash('notice', msg);
     return done(null, user);
 };
 
 const authFailed = (done: Function, req: Request, error = ''): Function => {
     const msg = 'LOGIN FAILED';
-    stdErr(msg + error);
+    console.error(msg + error);
     req.flash('notice', msg + error);
     return done(null, false);
 };
