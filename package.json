@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json"
   },
   "dependencies": {
     "app-module-path": "^2.2.0",

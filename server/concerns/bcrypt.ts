@@ -9,7 +9,7 @@ export const comparePlainWithHash = (plainText: string, encrypted: string): Prom
             resolve(isEqual);
         });
     })
-)
+);
 
 export const genHash = (plainText: string, saltRounds: number = 10): Promise<any> => (
     new Promise((resolve, reject) => {
@@ -26,4 +26,4 @@ export const genHash = (plainText: string, saltRounds: number = 10): Promise<any
             });
         });
     })
-)
+);

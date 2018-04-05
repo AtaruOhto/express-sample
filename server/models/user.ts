@@ -16,10 +16,16 @@ interface IUserOptionalAttrs {
 export type TUser = Model<'user', IUserAttrs>;
 export type TUserUpdate = Model<'user', IUserOptionalAttrs>;
 
-export const UserModel = sequelizeInstance.define('user', {
-    name: {type: Sequelize.STRING, allowNull: false, unique: true},
-    password: {type: Sequelize.STRING, allowNull: false},
-});
+export const UserModel = sequelizeInstance.define(
+    'user',
+    {
+        name: {type: Sequelize.STRING, allowNull: false, unique: true},
+        password: {type: Sequelize.STRING, allowNull: false},
+    },
+    {
+        rowFormat: 'DYNAMIC'
+    }
+);
 
 /* public */
 
