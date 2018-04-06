@@ -5,7 +5,7 @@ const Op = Sequelize.Op;
 /* const appRoot = require('app-root-path');
 // const dataFile = appRoot + '/data.sqlite';
 // export const sequelizeInstance = new Sequelize(
-//     'sample_db', null, null, {
+//     process.env.DB_NAME, null, null, {
 //         dialect: 'sqlite',
 //         storage: dataFile,
 //         operatorsAliases: Op
@@ -14,9 +14,12 @@ const Op = Sequelize.Op;
 */
 
 /* MySQL */
-export const sequelizeInstance = new Sequelize('sample_db', 'root', 'pass', {
-    host: '127.0.0.1',
-    port: 3333,
+export const sequelizeInstance = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS, {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: 'mysql',
     pool: {
         max: 5,
@@ -24,5 +27,6 @@ export const sequelizeInstance = new Sequelize('sample_db', 'root', 'pass', {
         acquire: 30000,
         idle: 10000
     },
-    operatorsAliases: Op
+    operatorsAliases: Op,
+    timezone: process.env.TIME_ZONE
 });

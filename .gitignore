@@ -6,3 +6,4 @@ yarn-error.log
 data.sqlite
 node_modules/
 dist/
+tmp/

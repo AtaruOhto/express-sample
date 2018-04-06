@@ -1,3 +1,5 @@
+import {setTimeZone} from './config/timeZone';
+
 require('dotenv').config();
 console.log(__dirname)
 require('app-module-path').addPath(__dirname);
@@ -23,6 +25,7 @@ const defRoutes = (app: Express) => {
 };
 
 const configureServer = (app: Express) => {
+    setTimeZone();
     useRequestMiddlewares(app);
     useFlash(app);
     useStaticDir(app);
