@@ -1,9 +1,8 @@
-import {setTimeZone} from './config/timeZone';
-
 require('dotenv').config();
 console.log(__dirname)
 require('app-module-path').addPath(__dirname);
 import express, { Express } from 'express';
+import { setTimeZone } from 'config/timeZone';
 import { defineRoutes } from 'config/routes';
 import { useStaticDir } from 'config/static';
 import { useSecurityMiddlewares } from 'config/security';

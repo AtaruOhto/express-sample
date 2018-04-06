@@ -52,20 +52,20 @@ const useSequelizeSession = (app: Express) => {
     );
 }
 
-const useOnMemorySession = (app: Express) => {
-    app.use(session(
-        {
-            secret: process.env.SECRET_KEY_BASE,
-            saveUninitialized: true,
-            maxAge: 1000 * 60 * 60 * 90,
-            cookie: {
-                path: '/'
-            },
-            resave: false,
-        }
-        )
-    );
-}
+// const useOnMemorySession = (app: Express) => {
+//     app.use(session(
+//         {
+//             secret: process.env.SECRET_KEY_BASE,
+//             saveUninitialized: true,
+//             maxAge: 1000 * 60 * 60 * 90,
+//             cookie: {
+//                 path: '/'
+//             },
+//             resave: false,
+//         }
+//         )
+//     );
+// }
 
 const useSession = (app: Express) => {
 
