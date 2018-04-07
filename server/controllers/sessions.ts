@@ -1,32 +1,27 @@
 import { Request, Response } from 'express';
 import { meta } from 'config/meta';
 import { getPassport } from 'config/auth';
-import { viewPath } from 'concerns/path';
-
-export const loginPath = '/sessions/login';
-export const logoutPath = '/sessions/logout';
-export const secretPath = '/sessions/secret';
+import { paths } from 'concerns/path';
 
 export const newSession = (req: Request, res: Response) => {
     res.render(
-        viewPath(loginPath),
+        paths.sessions.new.view(),
         {
             ...meta.login,
-            notice: req.flash('notice'),
-            loginPath: loginPath
+            notice: req.flash('notice')
         }
     );
 };
 
 export const createSession = getPassport().authenticate('local', {
-    successRedirect: secretPath,
-    failureRedirect: loginPath,
+    successRedirect: paths.users.edit.route,
+    failureRedirect: paths.sessions.new.route,
     successFlash: true,
     failureFlash: true
 });
 
-export const destoroySession = (req: Request, res: Response) => {
+export const destroySession = (req: Request, res: Response) => {
     req.logout();
     req.flash('notice', 'Logout Completed!');
-    res.redirect(loginPath);
+    res.redirect(paths.sessions.new.route);
 }

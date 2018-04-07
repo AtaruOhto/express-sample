@@ -1,31 +1,26 @@
 import { Express } from 'express';
 import { home } from 'controllers/home';
-import { newSession, createSession, destoroySession } from 'controllers/sessions';
+import { newSession, createSession, destroySession } from 'controllers/sessions';
 import { usersUpdate, usersEdit } from 'controllers/users';
 import { handle404, handle500 } from 'controllers/errors';
 import { withoutSession } from 'concerns/routing';
 import { withSession } from 'concerns/routing';
-import { updatePath } from 'controllers/users';
-
-export const homePath = '/';
-export const loginPath = '/sessions/login';
-export const logoutPath = '/sessions/logout';
-export const secretPath = '/sessions/secret';
+import { paths } from 'concerns/path';
 
 export const defineRoutes = (app: Express) => {
 
     /* home */
-    app.get(homePath, home);
+    app.get(paths.home.show.route, home);
 
     /* session */
-    app.get(loginPath, withoutSession, newSession);
-    app.post(loginPath, createSession);
-    app.delete(logoutPath, withSession, destoroySession);
+    app.get(paths.sessions.new.route, withoutSession, newSession);
+    app.post(paths.sessions.create.route, createSession);
+    app.delete(paths.sessions.destroy.route, withSession, destroySession);
 
     /* users */
-    app.get(secretPath, withSession, usersEdit);
+    app.get(paths.users.edit.route, withSession, usersEdit);
     // app.post(secretPath, withSession, usersCreate);
-    app.put(updatePath, withSession, usersUpdate);
+    app.put(paths.users.update.route, withSession, usersUpdate);
 
     /* Errors */
     app.use(handle500);

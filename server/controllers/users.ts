@@ -1,14 +1,12 @@
 import { Response, Request } from 'express';
-import { redirectToLogin } from 'concerns/routing';
 import { findOneUser, updateUser } from 'models/user';
-import { logoutPath, secretPath } from 'controllers/sessions';
 import { getFilledParams } from 'concerns/queryParams';
-import { viewPath } from 'concerns/path';
+import { paths } from 'concerns/path';
 
-export const updatePath = '/users/:id';
-export const makeUpdatePath = (id: string) => (
-    `/users/${id}?_method=PUT`
-);
+// export const updatePath = '/users/:id';
+// export const makeUpdatePath = (id: string) => (
+//     `/users/${id}?_method=PUT`
+// );
 
 export const usersUpdate = async (req: Request, res: Response) => {
     if (!(req.user)) { throw new Error('user is null'); }
@@ -16,18 +14,18 @@ export const usersUpdate = async (req: Request, res: Response) => {
     const updateParams = getFilledParams(['name', 'password'], req.body);
     updateUser(user, updateParams, {where: {name: user.name }}).catch((error: any) => { console.error(error); });
     req.flash('notice', 'User info was successfully updated!');
-    redirectToLogin(res);
+    res.redirect(paths.sessions.new.route);
 }
 
 export const usersEdit = (req: Request, res: Response) => {
     if (!(req.user)) { throw new Error('user is null'); }
     res.render(
-        viewPath(secretPath),
+        paths.users.edit.view(),
         {
             notice: req.flash('notice'),
             user: req.user,
-            logoutPath: logoutPath + '?_method=DELETE',
-            userUpdatePath: makeUpdatePath(req.user.id)
+            logoutPath: paths.sessions.destroy.dynamic(),
+            userUpdatePath: paths.users.update.dynamic(req.user.id)
         }
     );
 };
