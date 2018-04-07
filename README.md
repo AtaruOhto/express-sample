@@ -21,6 +21,13 @@ By default, this sample use Sqlite. Data file is required.
 touch data.sqlite
 ```
 
+### Setup Database
+
+CREATE DATABASE named sample_db;
+
+### Update env file
+
+
 ### Environment Variable
 
 Copy environment variable sample file.

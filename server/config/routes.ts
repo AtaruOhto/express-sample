@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import { home } from 'controllers/home';
-import { newSession, createSession, destorySession } from 'controllers/sessions';
+import { newSession, createSession, destoroySession } from 'controllers/sessions';
 import { usersUpdate, usersEdit } from 'controllers/users';
 import { handle404, handle500 } from 'controllers/errors';
 import { withoutSession } from 'concerns/routing';
@@ -20,10 +20,11 @@ export const defineRoutes = (app: Express) => {
     /* session */
     app.get(loginPath, withoutSession, newSession);
     app.post(loginPath, createSession);
-    app.delete(logoutPath, withSession, destorySession);
+    app.delete(logoutPath, withSession, destoroySession);
 
     /* users */
     app.get(secretPath, withSession, usersEdit);
+    // app.post(secretPath, withSession, usersCreate);
     app.put(updatePath, withSession, usersUpdate);
 
     /* Errors */

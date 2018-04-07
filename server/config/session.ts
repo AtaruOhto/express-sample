@@ -28,10 +28,8 @@ const useCookieParser = (app: Express) => {
 // }
 
 /* Use Sequelize as Session Store */
-
 import { sequelizeInstance } from 'db/dao';
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-
 const useSequelizeSession = (app: Express) => {
     app.use(session(
         {
@@ -70,8 +68,7 @@ const useSequelizeSession = (app: Express) => {
 const useSession = (app: Express) => {
 
         // useOnMemorySession(app);
-
-        useSequelizeSession(app);
+    useSequelizeSession(app);
 
 };
 

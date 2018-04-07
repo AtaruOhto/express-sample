@@ -19,13 +19,13 @@ export const newSession = (req: Request, res: Response) => {
 };
 
 export const createSession = getPassport().authenticate('local', {
-        successRedirect: secretPath,
-        failureRedirect: loginPath,
-        successFlash: true,
-        failureFlash: true
-})
+    successRedirect: secretPath,
+    failureRedirect: loginPath,
+    successFlash: true,
+    failureFlash: true
+});
 
-export const destorySession = (req: Request, res: Response) => {
+export const destoroySession = (req: Request, res: Response) => {
     req.logout();
     req.flash('notice', 'Logout Completed!');
     res.redirect(loginPath);

@@ -3,16 +3,28 @@ import { Model } from 'sequelize';
 
 /* Private */
 
-const _create = (model: Model<any, any>, attrs: {}): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        model.create(attrs).then(
-            (instance: any) => {
-                resolve(instance);
-            }, (error: any) => {
-                reject(error);
-            });
-    });
-};
+// const _create = (model: Model<any, any>, attrs: {}): Promise<any> => {
+//     return new Promise((resolve, reject) => {
+//         model.create(attrs).then(
+//             (instance: any) => {
+//                 resolve(instance);
+//             }, (error: any) => {
+//                 reject(error);
+//             });
+//     });
+// };
+
+// const _save = (model: Model<any, any>, attrs: {}): Promise<any> => {
+//     return new Promise((resolve, reject) => {
+//         model.build(attrs).save()
+//             .then((instance: any) => {
+//                 resolve(instance);
+//             })
+//             .catch((error: any) => {
+//                 reject(error);
+//             });
+//     });
+// };
 
 const _findOne = (model: Model<any, any>, attrs: {}): Promise<any> => {
     return new Promise((resolve, reject) => {
@@ -40,26 +52,23 @@ export const syncData = (): Promise<any> => {
     });
 }
 
-export const create = async (model: Model<any, any>, modelAttrs: {}): Promise<any> => {
-    return new Promise(async (resolve, reject) => {
-        await syncData().catch((error: any) => {
-            reject(error);
-        });
-        const instance = await _create(model, modelAttrs).catch((error: any) => {
-            reject(error);
-        });
+export const create = (model: Model<any, any>, modelAttrs: {}): Promise<any> => (
+    new Promise(async(resolve, reject) => {
+        const instance = await model.create(modelAttrs).catch((error: any) => { reject(error); });
         resolve(instance);
-    });
-};
+    })
+);
 
-export const findOne = (model: Model<any, any>, modelAttrs: {}): Promise<any> => {
-    return new Promise(async (resolve, reject) => {
-        await syncData().catch((error: any) => {
-            reject(error);
-        });
-        const instance = await _findOne(model, modelAttrs).catch((error: any) => {
-            reject(error);
-        });
+export const buildSave = (model: Model<any, any>, attrs: {}): Promise<any> => (
+    new Promise(async(resolve, reject) => {
+        const instance = await model.build(attrs).save().catch((error: any) => { reject(error); });
         resolve(instance);
-    });
-};
+    })
+)
+
+export const findOne = (model: Model<any, any>, modelAttrs: {}): Promise<any> => (
+    new Promise(async (resolve, reject) => {
+        const instance = await _findOne(model, modelAttrs).catch((error: any) => { reject(error); });
+        resolve(instance);
+    })
+)
