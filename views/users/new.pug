@@ -2,10 +2,10 @@ extends ../layout
 
 block content
     h1 User Create Page
-    form(method="POST" action=userUpdatePath)
+    form(method="POST" action=usersCreatePath)
         div
             label(for="name") Name
-            input(type="text" name="name" id="name" value=user.name)
+            input(type="text" name="name" id="name")
         div
             label(for="password") Password
             input(type="password" name="password" id="password")

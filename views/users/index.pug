@@ -1,17 +1,26 @@
 extends ../layout
 
 block content
-    h1 Users
+    h1 Users Edit
     a(href=createPath target="_blank") Create User
-    ul
-        each val in users
-            form(method="POST" action=val.updatePath)
+    each user in users
+        form(method="POST" action=user.updatePath)
+            fieldset
+                legend= user.name
+                p name
+                input(type="text" name="username" value=user.name)
+                p password
+                input(type="password" name="password")
+                br
+                input(type="hidden" name="_csrf" value=_csrf)
+                input(type="submit" value="update")
+
+    h1 Users Delete
+    each user in users
+        if user.type !== 'master'
+            form(method="POST" action=user.destroyPath)
                 fieldset
-                    legend= val.name
-                    p name
-                    input(type="text" name="username" value=val.name)
-                    p password
-                    input(type="password" name="password")
-                    br
+                    legend= user.name
+                    input(type="hidden" name="id" value=user.id)
                     input(type="hidden" name="_csrf" value=_csrf)
-                    input(type="submit" value="update")
+                    input(type="submit" value="delete")
