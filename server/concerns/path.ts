@@ -32,9 +32,9 @@ export const paths = {
             route: '/users/',
         },
         edit: {
-            route: '/users/:id/edit',
+            route: '/users/:id/edit/',
             view: () => ('users/edit'),
-            dynamic: (id: number) => ('/users/' + id + '/edit'),
+            dynamic: (id: number) => ('/users/' + id + '/edit/'),
         },
         update: {
             route: '/users/:id',

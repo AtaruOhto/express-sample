@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    h1 User Create Page
+    form(method="POST" action=userUpdatePath)
+        div
+            label(for="name") Name
+            input(type="text" name="name" id="name" value=user.name)
+        div
+            label(for="password") Password
+            input(type="password" name="password" id="password")
+        div
+            input(type="hidden" name="_csrf" value=_csrf)
+            button(type="submit") Update User Information

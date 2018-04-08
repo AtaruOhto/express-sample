@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    h1 Users
+    a(href=createPath target="_blank") Create User
+    ul
+        each val in users
+            form(method="POST" action=val.updatePath)
+                fieldset
+                    legend= val.name
+                    p name
+                    input(type="text" name="username" value=val.name)
+                    p password
+                    input(type="password" name="password")
+                    br
+                    input(type="hidden" name="_csrf" value=_csrf)
+                    input(type="submit" value="update")
